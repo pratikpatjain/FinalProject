@@ -9,9 +9,13 @@ idols, influencers or peers and we keep following it. This game is about breakin
 to discover yourself and carve your own path. 
 
 */
+var myRec = new p5.SpeechRec(); // new P5.SpeechRec object
+myRec.continuous = true; // do continuous recognition
+myRec.interimResults = true; // allow partial recognition (faster, less accurate)
 
-var x = 201;
-var y = 397;
+
+var x = 320;
+var y = 636;
 var level0;
 var level1;
 var level2;
@@ -26,49 +30,33 @@ var startTime = 0;
 var currentTime = 0;
 
 function preload() {
-  level0 = loadImage("data/maze2.png"); //beginner level
-  level1 = loadImage("data/maze2.png"); //first level
-  level2 = loadImage("data/maze2.png"); //second level
-  level3 = loadImage("data/maze2.png"); //third level
+  level0 = loadImage("data/maze.png"); //beginner level
 
   music = loadSound('Motivated.mp3'); //background music
 
 }
 
 function setup() {
-  createCanvas(402, 402);
+  createCanvas(640,640);
+  myRec.onResult = parseResult; // recognition callback
+  myRec.start(); // start engine
+  dx = 0;
+  dy = 0;
+  // document.getElementById('defaultCanvas0');
+  // document.getElementById('defaultCanvas0').style.marginLeft = windowWidth/2 - 320 + "px";
+  // document.getElementById('defaultCanvas0').style.marginTop = windowHeight/2 - 320 + "px";
+
   //noCanvas();
 
   //Animation of square using p5 Play Library
-  music.play();
-  spr = createSprite(
-    x, y, 10, 10);
-  spr.shapeColor = color(255,0,0);
-  spr.rotateToDirection = true;
-  spr.maxSpeed = 3;
-  spr.friction = 0.1;
+  // music.play();
+  // spr = createSprite(
+  //   x, y, 10, 10);
+  // spr.shapeColor = color(255,0,0);
+  // spr.rotateToDirection = true;
+  // spr.maxSpeed = 3;
+  // spr.friction = 0.1;
 
-  //Timer Code//
-
-  /*startTime = millis();
-
-  var params = getURLParams();
-
-  if (params.minute) {
-    var min = params.minute;
-    timeleft = min * 60;
-  }
-
-  var timer = select('#timer');
-  timer.html(convertSeconds(timeleft - currentTime));
-
-  var interval = setInterval(timeIt, 1000);
-
-  function timeIt() {
-    currentTime = floor((millis() - startTime) / 1000);
-    timer.html(convertSeconds(timeleft - currentTime));
-  }
-  */
 }
 
 function draw() {
@@ -85,15 +73,19 @@ function draw() {
   textSize(16);
   text("Life:",width/6, height/8);
   */
-  if (hit == 0) 
+
+  image(level0, 0, 0);
+
+  if (hit < 50) 
   {
-    console.log("you hit the wall");
-    x = 201;
-    y = 397;
+    console.log("Too bad, you hit the wall");
+    x = 320;
+    y = 636;
   }
 
-
-  //image(level0, 0, 0);
+  x+=dx;
+  y+=dy;
+  
   
   ellipseMode(CENTER);
   push();
@@ -112,26 +104,31 @@ function draw() {
     }
   }
 
-  if (mouseIsPressed) {
-    spr.attractionPoint(1, mouseX, mouseY);
-  }
-  drawSprites();
+  // if (mouseIsPressed) {
+  //   spr.attractionPoint(1, mouseX, mouseY);
+  // }
+  // drawSprites();
 
   //Movement of Red Ball/Player
 
-  if (keyIsDown(UP_ARROW)) {
+  //Move Up using W or up arrow
+
+  if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
     y--;
   }
 
-  if (keyIsDown(DOWN_ARROW)) {
+  //Move Up using S or down arrow
+  if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
     y++;
   }
 
-  if (keyIsDown(RIGHT_ARROW)) {
+  //Move Up using D or right arrow
+  if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
     x++;
   }
 
-  if (keyIsDown(LEFT_ARROW)) {
+  //Move Up using A or left arrow
+  if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
     x--;
   }
 }
@@ -141,6 +138,20 @@ function convertSeconds(s) {
   var sec = s % 60;
   return nf(min, 2) + ':' + nf(sec, 2);
 }
+
+function parseResult()
+  {
+    // recognition system will often append words into phrases.
+    // so hack here is to only use the last word:
+    var mostrecentword = myRec.resultString.split(' ').pop();
+    if(mostrecentword.indexOf("left")!==-1) { dx=-1;dy=0; }
+    else if(mostrecentword.indexOf("right")!==-1) { dx=1;dy=0; }
+    else if(mostrecentword.indexOf("up")!==-1) { dx=0;dy=-1; }
+    else if(mostrecentword.indexOf("down")!==-1) { dx=0;dy=1; }
+    console.log(mostrecentword);
+  }
+
+
 
 
 
