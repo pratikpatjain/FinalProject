@@ -11,12 +11,12 @@ to discover yourself and carve your own path.
 */
 var myRec = new p5.SpeechRec(); // new P5.SpeechRec object
 myRec.continuous = true; // do continuous recognition
-myRec.interimResults = true; // allow partial recognition (faster, less accurate)
+//myRec.interimResults = true; // allow partial recognition (faster, less accurate)
 
 
 var x = 320;
 var y = 636;
-var level0;
+var maze;
 var level1;
 var level2;
 var level3;
@@ -30,7 +30,7 @@ var startTime = 0;
 var currentTime = 0;
 
 function preload() {
-  level0 = loadImage("data/maze.png"); //beginner level
+  maze = loadImage("data/maze.png"); //beginner level
 
   music = loadSound('Motivated.mp3'); //background music
 
@@ -42,25 +42,32 @@ function setup() {
   myRec.start(); // start engine
   dx = 0;
   dy = 0;
+  // pixelDensity(1);
+  // maze.loadPixels();
+  // loadPixels();
+
   // document.getElementById('defaultCanvas0');
   // document.getElementById('defaultCanvas0').style.marginLeft = windowWidth/2 - 320 + "px";
   // document.getElementById('defaultCanvas0').style.marginTop = windowHeight/2 - 320 + "px";
 
   //noCanvas();
 
+
+  //Plays background electronic music
+  music.play();
+
   //Animation of square using p5 Play Library
-  // music.play();
-  // spr = createSprite(
-  //   x, y, 10, 10);
-  // spr.shapeColor = color(255,0,0);
-  // spr.rotateToDirection = true;
-  // spr.maxSpeed = 3;
-  // spr.friction = 0.1;
+  spr = createSprite(
+    x, y, 10, 10);
+  spr.shapeColor = color(255,0,0);
+  spr.rotateToDirection = true;
+  spr.maxSpeed = 3;
+  spr.friction = 0.1;
 
 }
 
 function draw() {
-  background(level0);
+  background(maze);
   hit = red(get(x, y));
   
   /*
@@ -74,7 +81,7 @@ function draw() {
   text("Life:",width/6, height/8);
   */
 
-  image(level0, 0, 0);
+  image(maze, 0, 0);
 
   if (hit < 50) 
   {
@@ -104,10 +111,10 @@ function draw() {
     }
   }
 
-  // if (mouseIsPressed) {
-  //   spr.attractionPoint(1, mouseX, mouseY);
-  // }
-  // drawSprites();
+  if (mouseIsPressed) {
+    spr.attractionPoint(1, mouseX, mouseY);
+  }
+  drawSprites();
 
   //Movement of Red Ball/Player
 
@@ -118,19 +125,53 @@ function draw() {
   }
 
   //Move Up using S or down arrow
+
   if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
     y++;
   }
 
   //Move Up using D or right arrow
+
   if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
     x++;
   }
 
   //Move Up using A or left arrow
+
   if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
     x--;
   }
+
+  // for (var x = 0; x < maze.width; x++) {
+  //   for (var y = 0; y < maze.height; y++ ) {
+
+  //     // Calculate the 1D location from a 2D grid
+  //     var loc = (x + y*maze.width)*4;
+
+  //     // Get the R,G,B values from image
+  //     var r,g,b;
+  //     r = maze.pixels[loc];
+
+  //     // Calculate an amount to change brightness based on proximity to the mouse
+  //     var maxdist = 50;
+  //     var d = dist(x, y, mouseX, mouseY);
+  //     var adjustbrightness = 255*(maxdist-d)/maxdist;
+  //     r += adjustbrightness;
+
+  //     // Constrain RGB to make sure they are within 0-255 color range
+  //     r = constrain(r, 0, 255);
+
+  //     // Make a new color and set pixel in the window
+  //     //color c = color(r, g, b);
+  //     var pixloc = (y*width + x)*4;
+  //     pixels[pixloc] = r;
+  //     pixels[pixloc+1] = r;
+  //     pixels[pixloc+2] = r;
+  //     pixels[pixloc+3] = 255;
+  //   }
+  // }
+  // updatePixels();
+  drawGrid ();
 }
 
 function convertSeconds(s) {
@@ -140,17 +181,48 @@ function convertSeconds(s) {
 }
 
 function parseResult()
-  {
+{
     // recognition system will often append words into phrases.
     // so hack here is to only use the last word:
+
     var mostrecentword = myRec.resultString.split(' ').pop();
     if(mostrecentword.indexOf("left")!==-1) { dx=-1;dy=0; }
     else if(mostrecentword.indexOf("right")!==-1) { dx=1;dy=0; }
     else if(mostrecentword.indexOf("up")!==-1) { dx=0;dy=-1; }
     else if(mostrecentword.indexOf("down")!==-1) { dx=0;dy=1; }
     console.log(mostrecentword);
-  }
+  
+}
 
+//Brightness Effect
+
+function drawGrid (){
+
+console.log(mouseX,mouseY);
+
+  for(var i =0; i< width; i+= 20){
+   for(var j=0; j<height; j+= 20){
+     //fill(255-dist(mouseX,mouseY,i,j));
+     //rect(i,j,20,20);
+     if(mouseX <500 && mouseY < 500){
+       fill(255-dist(mouseX,mouseY,i,j),0,0);
+       rect(i,j,20,20);
+     }
+     else if(mouseX >500 && mouseY < 500){
+       fill(0, 255-dist(mouseX,mouseY,i,j),0);
+       rect(i,j,20,20);
+     }
+     else if(mouseX >500 && mouseY > 500){
+       fill(0,0,255-dist(mouseX,mouseY,i,j));
+       rect(i,j,20,20);
+     }
+     else{
+       fill(255-dist(mouseX,mouseY,i,j),255-dist(mouseX,mouseY,i,j),0);
+       rect(i,j,20,20);
+     }
+   }
+  }
+}
 
 
 
