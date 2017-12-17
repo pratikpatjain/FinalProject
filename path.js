@@ -11,7 +11,7 @@ to discover yourself and carve your own path.
 */
 var myRec = new p5.SpeechRec(); // new P5.SpeechRec object
 myRec.continuous = true; // do continuous recognition
-//myRec.interimResults = true; // allow partial recognition (faster, less accurate)
+myRec.interimResults = false; // allow partial recognition (faster, less accurate)
 
 
 var x = 320;
@@ -24,6 +24,7 @@ var music;
 var hit;
 var spr;
 var loopholes = [[],[],[]]; //array for the spots player can pass through//
+var smileys = [[65,65],[310,600]];
 
 var timeleft = 10;
 var startTime = 0;
@@ -98,7 +99,7 @@ function draw() {
   push();
   translate(x, y);
   fill(255, 0, 0);
-  ellipse(0, 0, 8, 8);
+  ellipse(0, 0, 9, 9);
   pop();
 
 
@@ -142,6 +143,13 @@ function draw() {
     x--;
   }
 
+  happy1 = new Hapiness(185,65);
+  happy1.drawHapiness();
+
+  drawSmileys();
+
+  collect();
+
   // for (var x = 0; x < maze.width; x++) {
   //   for (var y = 0; y < maze.height; y++ ) {
 
@@ -171,7 +179,7 @@ function draw() {
   //   }
   // }
   // updatePixels();
-  drawGrid ();
+  //drawGrid ();
 }
 
 function convertSeconds(s) {
@@ -194,34 +202,84 @@ function parseResult()
   
 }
 
+
+class Hapiness {
+
+  constructor(x,y){
+
+    this.x = x;
+    this.y = y;
+
+  }
+
+  drawHapiness(){
+
+  noStroke();
+
+  // smiley face
+  fill(247, 202, 24);
+  ellipse(this.x, this.y, 20, 20);
+
+  //smiley eyes & mouth
+  fill(0);
+  ellipse(this.x-5, this.y-2, 4, 4);
+  ellipse(this.x+5, this.y-2, 4, 4);
+  arc(this.x, this.y+3, 10, 8, radians(0), radians(180));
+
+  }
+}
+
+function drawSmileys(){
+
+  for (var i= 0; i<smileys.length; i++){
+
+    new Hapiness(smileys[i][0],smileys[i][1]).drawHapiness();
+
+  }
+
+}
+
+function collect(){
+
+  for (var i= 0; i<smileys.length; i++){
+
+    if (dist(x,y,smileys[i][0],smileys[i][1])< 8) {
+
+      console.log("FFCG");
+      smileys.splice(i,1);
+    }
+  }  
+}
+
+
 //Brightness Effect
 
 function drawGrid (){
 
-console.log(mouseX,mouseY);
+// console.log(mouseX,mouseY);
 
-  for(var i =0; i< width; i+= 20){
-   for(var j=0; j<height; j+= 20){
-     //fill(255-dist(mouseX,mouseY,i,j));
-     //rect(i,j,20,20);
-     if(mouseX <500 && mouseY < 500){
-       fill(255-dist(mouseX,mouseY,i,j),0,0);
-       rect(i,j,20,20);
-     }
-     else if(mouseX >500 && mouseY < 500){
-       fill(0, 255-dist(mouseX,mouseY,i,j),0);
-       rect(i,j,20,20);
-     }
-     else if(mouseX >500 && mouseY > 500){
-       fill(0,0,255-dist(mouseX,mouseY,i,j));
-       rect(i,j,20,20);
-     }
-     else{
-       fill(255-dist(mouseX,mouseY,i,j),255-dist(mouseX,mouseY,i,j),0);
-       rect(i,j,20,20);
-     }
-   }
-  }
+//   for(var i =0; i< width; i+= 20){
+//    for(var j=0; j<height; j+= 20){
+//      //fill(255-dist(mouseX,mouseY,i,j));
+//      //rect(i,j,20,20);
+//      if(mouseX <500 && mouseY < 500){
+//        fill(255-dist(mouseX,mouseY,i,j),0,0);
+//        rect(i,j,20,20);
+//      }
+//      else if(mouseX >500 && mouseY < 500){
+//        fill(0, 255-dist(mouseX,mouseY,i,j),0);
+//        rect(i,j,20,20);
+//      }
+//      else if(mouseX >500 && mouseY > 500){
+//        fill(0,0,255-dist(mouseX,mouseY,i,j));
+//        rect(i,j,20,20);
+//      }
+//      else{
+//        fill(255-dist(mouseX,mouseY,i,j),255-dist(mouseX,mouseY,i,j),0);
+//        rect(i,j,20,20);
+//      }
+//    }
+//   }
 }
 
 
