@@ -35,7 +35,9 @@ var hitwall;
 var walkoflife;
 var whoosh;
 var hitmsgcount = 0;
+var beginGame = false;
 //var delay;
+var button;
 var score = 0;
 var gateways = [[210,313],[7,618],[515,108],[618,388]]; //array for the spots player can pass through//
 
@@ -67,6 +69,9 @@ function setup() {
   dx = 0;
   dy = 0;
 
+  if(!beginGame)
+  titlescreen();
+
   // pixelDensity(1);
   // maze.loadPixels();
   // loadPixels();
@@ -77,10 +82,12 @@ function setup() {
   // document.getElementById('defaultCanvas0').style.marginLeft = windowWidth/2 - 320 + "px";
   // document.getElementById('defaultCanvas0').style.marginTop = windowHeight/2 - 320 + "px";
 
-  //Plays background electronic music
-  //walkoflife.play();
+  //Plays titlescreen electronic music
+  //music.play();
 
-  walkoflife.setVolume(0.3);
+  //Plays game electronic music
+  walkoflife.play();
+  walkoflife.setVolume(0.4);
 
   //Loops the music
   walkoflife.setLoop(true);
@@ -96,6 +103,16 @@ function setup() {
 }
 
 function draw() {
+
+  
+
+  if(beginGame){
+  console.log()
+  var elem = document.querySelector('button');
+  button.remove();
+  console.log('btn removed');
+
+  //music.stop();  
 
   background(maze);
 
@@ -211,7 +228,8 @@ function draw() {
   textSize(21);
   text(score,312,149);
 
-  //Brightness Effect for darkness around player
+  //Brightness Effect for spotlight around player
+
   // for (var x = 0; x < maze.width; x++) {
   //   for (var y = 0; y < maze.height; y++ ) {
 
@@ -242,12 +260,33 @@ function draw() {
   // }
   // updatePixels();
   //drawGrid ();
+
+  }
+
+  
 }
 
-function convertSeconds(s) {
-  var min = floor(s / 60);
-  var sec = s % 60;
-  return nf(min, 2) + ':' + nf(sec, 2);
+//Title Screen
+function titlescreen() {
+
+  //console.log("ffff");
+  
+  background(0); 
+  fill(255);
+  strokeWeight(7);
+  textSize(65);
+  text("The Path", 180,height/3); 
+  textSize(35);
+  text("'Carve your path'", 180,height/2); 
+
+  stroke(0,255,0);
+  button = createButton('PLAY');
+  button.position(320, 320);
+  button.style.color = "white";
+  button.mousePressed(function (){
+    beginGame = true;
+  });
+  
 }
 
 //For making player move with Voice Recognition
@@ -257,7 +296,7 @@ function parseResult()
     // so hack here is to only use the last word:
 
     var mostrecentword = myRec.resultString.split(' ').pop();
-    
+
     //Used or for other words to be included to make speech response smoother
     if(mostrecentword.indexOf("left")!==-1 || mostrecentword.indexOf("lift")!==-1 ){ 
 
@@ -415,7 +454,7 @@ function hitthewall(){
   //   clearInterval(timer);
 }
 
-//Brightness Effect for darkness around player
+//Brightness Effect for spotlight around player
 
 function drawGrid (){
 
