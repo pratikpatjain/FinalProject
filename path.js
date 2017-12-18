@@ -29,6 +29,9 @@ var joy;
 var finish;
 var hitwall;
 var walkoflife;
+var hitmsgcount = 0;
+//var delay;
+var score = 0;
 var portal = [[],[],[]]; //array for the spots player can pass through//
 var smileys = [[65,65],[242,625],[626,90],[92,370],[550,245],[575,600],[448,422],[295,295],[448,168],[218,498],[15,550],[345,91]];
 
@@ -106,10 +109,19 @@ function draw() {
   if (hit < 50) //Restart if you hit the wall
   {
     console.log("Too bad, you hit the wall");
+    fill (255);
+    strokeWeight(4);
+    textSize(30);
+    text("Too bad, you hit the wall", 160, 220);
+    if (hitmsgcount<10000)
+    hitthewall();
+    //timer = setInterval(hitthewall, 1000);
     x = 320;
     y = 630;
     hitwall.play();
+
   }
+  else {hitmsgcount=0}
 
   x+=dx;
   y+=dy;
@@ -121,7 +133,7 @@ function draw() {
   stroke(55, 150, 255);
   strokeWeight (1 +(frameCount % 2));
   fill(255, 0, 0);
-  ellipse(0, 0, 11, 11);
+  ellipse(0, 0, 12, 12);
   pop();
 
   //For Displaying Win Message when the player reaches the end of the Maze
@@ -173,6 +185,10 @@ function draw() {
 
   collect();
 
+  textSize(25);
+  text(score,310,150);
+
+  //Brightness Effect for darkness around player
   // for (var x = 0; x < maze.width; x++) {
   //   for (var y = 0; y < maze.height; y++ ) {
 
@@ -277,10 +293,18 @@ function collect(){
       console.log("Joy");
       smileys.splice(i,1);
       joy.play();
+      score++;
     }
   }  
 }
 
+function hitthewall(){
+
+  text("Too bad, you hit the wall", 160, 220);
+  hitmsgcount++;
+  // if(hitmsgcount == 10)
+  //   clearInterval(timer);
+}
 
 //Brightness Effect for darkness around player
 
