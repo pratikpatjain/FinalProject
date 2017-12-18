@@ -9,11 +9,13 @@ idols, influencers or peers and we keep following it. This game is about breakin
 to discover yourself and carve your own path. 
 
 */
+
+//The P5 Speech Library 
 var myRec = new p5.SpeechRec(); // new P5.SpeechRec object
 myRec.continuous = true; // do continuous recognition
 myRec.interimResults = false; // allow partial recognition (faster, less accurate)
 
-
+//Global Variables
 var x = 320;
 var y = 636;
 var maze;
@@ -24,12 +26,10 @@ var music;
 var hit;
 var spr;
 var loopholes = [[],[],[]]; //array for the spots player can pass through//
-var smileys = [[65,65],[310,600]];
+var smileys = [[65,65],[242,625],[626,90],[92,370],[550,245],[575,600],[448,422],[295,295],[448,168],[218,498],[85,540],[260,260]];
 
-var timeleft = 10;
-var startTime = 0;
-var currentTime = 0;
 
+//Preloads media for faster performance
 function preload() {
   maze = loadImage("data/maze.png"); //beginner level
 
@@ -47,15 +47,17 @@ function setup() {
   // maze.loadPixels();
   // loadPixels();
 
+
+  //To place the game in the centre of the screen
   // document.getElementById('defaultCanvas0');
   // document.getElementById('defaultCanvas0').style.marginLeft = windowWidth/2 - 320 + "px";
   // document.getElementById('defaultCanvas0').style.marginTop = windowHeight/2 - 320 + "px";
 
-  //noCanvas();
-
-
   //Plays background electronic music
-  music.play();
+  //music.play();
+
+  //Loops the music
+  //music.setLoop(true);
 
   //Animation of square using p5 Play Library
   spr = createSprite(
@@ -68,8 +70,10 @@ function setup() {
 }
 
 function draw() {
+
   background(maze);
-  hit = red(get(x, y));
+
+  hit = red(get(x, y)); //To check for color
   
   /*
   textSize(16);
@@ -84,7 +88,7 @@ function draw() {
 
   image(maze, 0, 0);
 
-  if (hit < 50) 
+  if (hit < 50) //Restart if you hit the wall
   {
     console.log("Too bad, you hit the wall");
     x = 320;
@@ -94,7 +98,7 @@ function draw() {
   x+=dx;
   y+=dy;
   
-  
+  //Player
   ellipseMode(CENTER);
   push();
   translate(x, y);
@@ -102,7 +106,7 @@ function draw() {
   ellipse(0, 0, 9, 9);
   pop();
 
-
+  //For Displaying Win Message when the player reaches the end of the Maze
   if (x > 148 && x < 158) {
     if (y < 5) {
       fill (16,178,2);
@@ -188,6 +192,7 @@ function convertSeconds(s) {
   return nf(min, 2) + ':' + nf(sec, 2);
 }
 
+//For making player move with Voice Recognition
 function parseResult()
 {
     // recognition system will often append words into phrases.
@@ -217,18 +222,19 @@ class Hapiness {
   noStroke();
 
   // smiley face
-  fill(247, 202, 24);
-  ellipse(this.x, this.y, 20, 20);
+  fill(255, 202, 24);
+  ellipse(this.x, this.y, 18, 18);
 
   //smiley eyes & mouth
   fill(0);
-  ellipse(this.x-5, this.y-2, 4, 4);
-  ellipse(this.x+5, this.y-2, 4, 4);
-  arc(this.x, this.y+3, 10, 8, radians(0), radians(180));
+  ellipse(this.x-4, this.y-2, 3, 3);
+  ellipse(this.x+4, this.y-2, 3, 3);
+  arc(this.x, this.y+2, 9, 8, radians(0), radians(180));
 
   }
 }
 
+//To draw the Happy Faces
 function drawSmileys(){
 
   for (var i= 0; i<smileys.length; i++){
@@ -252,7 +258,7 @@ function collect(){
 }
 
 
-//Brightness Effect
+//Brightness Effect for darkness around player
 
 function drawGrid (){
 
