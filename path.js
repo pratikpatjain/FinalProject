@@ -25,15 +25,21 @@ var level3;
 var music;
 var hit;
 var spr;
+var joy;
+var finish;
 var loopholes = [[],[],[]]; //array for the spots player can pass through//
-var smileys = [[65,65],[242,625],[626,90],[92,370],[550,245],[575,600],[448,422],[295,295],[448,168],[218,498],[85,540],[260,260]];
+var smileys = [[65,65],[242,625],[626,90],[92,370],[550,245],[575,600],[448,422],[295,295],[448,168],[218,498],[15,550],[345,91]];
 
 
 //Preloads media for faster performance
 function preload() {
   maze = loadImage("data/maze.png"); //beginner level
 
-  music = loadSound('Motivated.mp3'); //background music
+  music = loadSound("Motivated.mp3"); //background music
+
+  finish = loadSound("achievement.wav"); //sound played when you get hapiness 
+
+  joy = loadSound("joy.wav");
 
 }
 
@@ -103,16 +109,17 @@ function draw() {
   push();
   translate(x, y);
   fill(255, 0, 0);
-  ellipse(0, 0, 9, 9);
+  ellipse(0, 0, 10, 10);
   pop();
 
   //For Displaying Win Message when the player reaches the end of the Maze
-  if (x > 148 && x < 158) {
-    if (y < 5) {
+  if (x > 315 && x < 325) {
+    if (y < 10) {
       fill (16,178,2);
       textSize(40);
       stroke(0);
       text("YOU WIN!", 50, 50);
+      finish.play(); //finishing sound
     }
   }
 
@@ -147,7 +154,7 @@ function draw() {
     x--;
   }
 
-  happy1 = new Hapiness(185,65);
+  happy1 = new Hapiness(193,142);
   happy1.drawHapiness();
 
   drawSmileys();
@@ -251,8 +258,9 @@ function collect(){
 
     if (dist(x,y,smileys[i][0],smileys[i][1])< 8) {
 
-      console.log("FFCG");
+      console.log("Joy");
       smileys.splice(i,1);
+      joy.play();
     }
   }  
 }
