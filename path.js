@@ -15,9 +15,13 @@ var myRec = new p5.SpeechRec(); // new P5.SpeechRec object
 myRec.continuous = true; // do continuous recognition
 myRec.interimResults = false; // allow partial recognition (faster, less accurate)
 
+
 //Global Variables
-var x = 320;
+
+//Initial Position of the Ball
+var x = 320; 
 var y = 630;
+
 var maze;
 var level1;
 var level2;
@@ -29,11 +33,13 @@ var joy;
 var finish;
 var hitwall;
 var walkoflife;
+var whoosh;
 var hitmsgcount = 0;
 //var delay;
 var score = 0;
-var portal = [[],[],[]]; //array for the spots player can pass through//
-var smileys = [[65,65],[242,625],[626,90],[92,370],[550,245],[575,600],[448,422],[295,295],[448,168],[218,498],[15,550],[345,91]];
+var gateways = [[210,313][7,618],[515,108],[618,388]]; //array for the spots player can pass through//
+
+var smileys = [[65,65],[242,625],[626,90],[92,370],[193,142][550,245],[575,600],[448,422],[295,295],[448,168],[218,498],[15,550],[345,91]];
 
 
 //Preloads media for faster performance
@@ -49,6 +55,8 @@ function preload() {
   joy = loadSound("joy.wav");
 
   hitwall = loadSound("hitwall.mp3"); //sound effect when you hit wall
+
+  whoosh = loadSound("whoosh.wav"); //sound effect when you teleport
 
 }
 
@@ -119,6 +127,7 @@ function draw() {
     x = 320;
     y = 630;
     hitwall.play();
+    score--; //Reduces Score by 1
 
   }
   else {hitmsgcount=0}
@@ -181,12 +190,23 @@ function draw() {
   happy1 = new Hapiness(193,142);
   happy1.drawHapiness();
 
+  portal1 = new Portal(210,313);
+  portal1.drawPortal();
+
   drawSmileys();
+
+  drawGateways();
 
   collect();
 
+  transport();
+
+  //Displaying Score
   textSize(25);
-  text(score,310,150);
+  stroke(121,0,255);
+  fill(55, 150, 255);
+  strokeWeight(3);
+  text(score,312,149);
 
   //Brightness Effect for darkness around player
   // for (var x = 0; x < maze.width; x++) {
@@ -293,10 +313,56 @@ function collect(){
       console.log("Joy");
       smileys.splice(i,1);
       joy.play();
-      score++;
+      score = score+5;
     }
   }  
 }
+
+class Portal {
+
+  constructor(x,y){
+
+    this.x = x;
+    this.y = y;
+  }
+
+  drawPortal(){
+
+    fill(255,30,122);
+    strokeWeight();
+    stroke(255,255,0);
+    strokeWeight (1 +(frameCount % 2));
+    //this.x += random(-1, 1);
+    //this.y += random(-1, 1);
+    rect(this.x,this.y,15,15);
+    
+  }
+}
+
+//To draw the Portals
+function drawGateways(){
+
+  for (var i= 0; i<gateways.length; i++){
+
+    new Portal (gateways[i][0],gateways[i][1]).drawPortal();
+
+  }
+
+}
+
+function transport(){
+
+  for (var i= 0; i<gateways.length; i++){
+
+    if (dist(x,y,gateways[i][0],gateways[i][1])< 8) {
+
+      console.log("Dr.Who");
+
+      whoosh.play();
+    }
+  }    
+}
+
 
 function hitthewall(){
 
