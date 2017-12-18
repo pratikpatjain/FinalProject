@@ -132,8 +132,8 @@ function draw() {
   }
   else {hitmsgcount=0}
 
-  x+=dx;
-  y+=dy;
+  x+=0.25*dx;
+  y+=0.25*dy;
   
   //Player
   ellipseMode(CENTER);
@@ -257,10 +257,28 @@ function parseResult()
     // so hack here is to only use the last word:
 
     var mostrecentword = myRec.resultString.split(' ').pop();
-    if(mostrecentword.indexOf("left")!==-1) { dx=-1;dy=0; }
-    else if(mostrecentword.indexOf("right")!==-1) { dx=1;dy=0; }
-    else if(mostrecentword.indexOf("up")!==-1) { dx=0;dy=-1; }
-    else if(mostrecentword.indexOf("down")!==-1) { dx=0;dy=1; }
+    
+    //Used or for other words to be included to make speech response smoother
+    if(mostrecentword.indexOf("left")!==-1 || mostrecentword.indexOf("lift")!==-1 ){ 
+
+      dx=-1;
+      dy=0; 
+    }
+    else if(mostrecentword.indexOf("right")!==-1 || mostrecentword.indexOf("ride")!==-1 ) { 
+
+      dx=1;
+      dy=0; 
+    }
+    else if(mostrecentword.indexOf("up")!==-1 || mostrecentword.indexOf("app")!==-1) { 
+
+      dx=0;
+      dy=-1;
+    }
+    else if(mostrecentword.indexOf("down")!==-1) { 
+
+      dx=0;
+      dy=1;
+    }
     console.log(mostrecentword);
   
 }
