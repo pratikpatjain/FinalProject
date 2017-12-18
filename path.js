@@ -27,6 +27,8 @@ var hit;
 var spr;
 var joy;
 var finish;
+var hitwall;
+var walkoflife;
 var loopholes = [[],[],[]]; //array for the spots player can pass through//
 var smileys = [[65,65],[242,625],[626,90],[92,370],[550,245],[575,600],[448,422],[295,295],[448,168],[218,498],[15,550],[345,91]];
 
@@ -35,11 +37,15 @@ var smileys = [[65,65],[242,625],[626,90],[92,370],[550,245],[575,600],[448,422]
 function preload() {
   maze = loadImage("data/maze.png"); //beginner level
 
-  music = loadSound("Motivated.mp3"); //background music
+  music = loadSound("Motivated.mp3"); //title background music
+
+  walkoflife = loadSound("walk.mp3"); // game background music
 
   finish = loadSound("achievement.wav"); //sound played when you get hapiness 
 
   joy = loadSound("joy.wav");
+
+  hitwall = loadSound("hitwall.mp3"); //sound effect when you hit wall
 
 }
 
@@ -60,10 +66,12 @@ function setup() {
   // document.getElementById('defaultCanvas0').style.marginTop = windowHeight/2 - 320 + "px";
 
   //Plays background electronic music
-  //music.play();
+  //walkoflife.play();
+
+  walkoflife.setVolume(0.3);
 
   //Loops the music
-  //music.setLoop(true);
+  walkoflife.setLoop(true);
 
   //Animation of square using p5 Play Library
   spr = createSprite(
@@ -99,6 +107,7 @@ function draw() {
     console.log("Too bad, you hit the wall");
     x = 320;
     y = 636;
+    hitwall.play();
   }
 
   x+=dx;
