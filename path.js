@@ -37,7 +37,7 @@ var whoosh;
 var hitmsgcount = 0;
 //var delay;
 var score = 0;
-var gateways = [[310,590],[210,313],[7,618],[515,108],[618,388]]; //array for the spots player can pass through//
+var gateways = [[210,313],[7,618],[515,108],[618,388]]; //array for the spots player can pass through//
 
 var smileys = [[65,65],[242,625],[626,90],[92,370],[193,142],[550,245],[575,600],[448,422],[295,295],[448,168],[218,498],[15,550],[345,91]];
 
@@ -202,10 +202,13 @@ function draw() {
   transport();
 
   //Displaying Score
-  textSize(25);
+  
   stroke(121,0,255);
   fill(55, 150, 255);
   strokeWeight(3);
+  textSize(17);
+  text("S c o r e :",235,149)
+  textSize(21);
   text(score,312,149);
 
   //Brightness Effect for darkness around player
@@ -364,7 +367,7 @@ function transport(){
 
       switch(i){
 
-        case 0 : x = 450; 
+        case 0 : x = 345; 
                  y = 450;
                  break;
 
@@ -372,17 +375,15 @@ function transport(){
                  y = 475;
                  break;
 
-        case 2 : x = 450;
-                 y = 450;
+        case 2 : x = 65;
+                 y = 190;
                  break;
 
-        case 3 : x = 450;
-                 y = 450;
+        case 3 : x = 472;
+                 y = 120;
                  break;         
 
-      }
-      // x = 445;
-      // y = 470; 
+      } 
     }
   }    
 }
