@@ -17,7 +17,7 @@ myRec.interimResults = false; // allow partial recognition (faster, less accurat
 
 //Global Variables
 var x = 320;
-var y = 636;
+var y = 630;
 var maze;
 var level1;
 var level2;
@@ -29,7 +29,7 @@ var joy;
 var finish;
 var hitwall;
 var walkoflife;
-var loopholes = [[],[],[]]; //array for the spots player can pass through//
+var portal = [[],[],[]]; //array for the spots player can pass through//
 var smileys = [[65,65],[242,625],[626,90],[92,370],[550,245],[575,600],[448,422],[295,295],[448,168],[218,498],[15,550],[345,91]];
 
 
@@ -55,6 +55,7 @@ function setup() {
   myRec.start(); // start engine
   dx = 0;
   dy = 0;
+
   // pixelDensity(1);
   // maze.loadPixels();
   // loadPixels();
@@ -106,7 +107,7 @@ function draw() {
   {
     console.log("Too bad, you hit the wall");
     x = 320;
-    y = 636;
+    y = 630;
     hitwall.play();
   }
 
@@ -117,17 +118,19 @@ function draw() {
   ellipseMode(CENTER);
   push();
   translate(x, y);
+  stroke(55, 150, 255);
+  strokeWeight (1 +(frameCount % 2));
   fill(255, 0, 0);
-  ellipse(0, 0, 10, 10);
+  ellipse(0, 0, 11, 11);
   pop();
 
   //For Displaying Win Message when the player reaches the end of the Maze
   if (x > 315 && x < 325) {
     if (y < 10) {
       fill (16,178,2);
-      textSize(40);
+      textSize(35);
       stroke(0);
-      text("YOU WIN!", 50, 50);
+      text("GOAL ATTAINED!", 150, 150);
       finish.play(); //finishing sound
     }
   }
@@ -240,6 +243,10 @@ class Hapiness {
   // smiley face
   fill(255, 202, 24);
   ellipse(this.x, this.y, 18, 18);
+
+  // Jiggling randomly on the vertical axis
+  //this.x = this.x + random(-1, 1);
+  this.y = this.y + random(-1, 1);
 
   //smiley eyes & mouth
   fill(0);
