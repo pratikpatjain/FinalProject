@@ -37,9 +37,9 @@ var whoosh;
 var hitmsgcount = 0;
 //var delay;
 var score = 0;
-var gateways = [[210,313][7,618],[515,108],[618,388]]; //array for the spots player can pass through//
+var gateways = [[310,590],[210,313],[7,618],[515,108],[618,388]]; //array for the spots player can pass through//
 
-var smileys = [[65,65],[242,625],[626,90],[92,370],[193,142][550,245],[575,600],[448,422],[295,295],[448,168],[218,498],[15,550],[345,91]];
+var smileys = [[65,65],[242,625],[626,90],[92,370],[193,142],[550,245],[575,600],[448,422],[295,295],[448,168],[218,498],[15,550],[345,91]];
 
 
 //Preloads media for faster performance
@@ -328,7 +328,7 @@ class Portal {
 
   drawPortal(){
 
-    fill(255,30,122);
+    fill(255,65,242);
     strokeWeight();
     stroke(255,255,0);
     strokeWeight (1 +(frameCount % 2));
@@ -350,15 +350,39 @@ function drawGateways(){
 
 }
 
+//For teleporting the player
 function transport(){
 
   for (var i= 0; i<gateways.length; i++){
 
-    if (dist(x,y,gateways[i][0],gateways[i][1])< 8) {
+    //console.log(dist(x,y,gateways[i][0],gateways[i][1]));
+
+    if (dist(x,y,gateways[i][0],gateways[i][1])< 15) {
 
       console.log("Dr.Who");
-
       whoosh.play();
+
+      switch(i){
+
+        case 0 : x = 450; 
+                 y = 450;
+                 break;
+
+        case 1 : x = 445; 
+                 y = 475;
+                 break;
+
+        case 2 : x = 450;
+                 y = 450;
+                 break;
+
+        case 3 : x = 450;
+                 y = 450;
+                 break;         
+
+      }
+      // x = 445;
+      // y = 470; 
     }
   }    
 }
