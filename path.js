@@ -422,8 +422,9 @@ function transport(){
     if (dist(x,y,gateways[i][0],gateways[i][1])< 15) {
 
       console.log("Dr.Who");
-      whoosh.play();
+      whoosh.play(); //teleportation sound effect
 
+      //Randomly transports players when they enter a portal 
       switch(random(0,4)){
 
         case 0 : x = 345; 
