@@ -425,10 +425,12 @@ function transport(){
       whoosh.play(); //teleportation sound effect
 
       //Randomly transports players when they enter a portal 
-      switch(random(0,4)){
+      switch(parseInt(random(0,4))){
+
 
         case 0 : x = 345; 
                  y = 450;
+                 //console.log("Apparate Please");
                  break;
 
         case 1 : x = 445; 
