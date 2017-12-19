@@ -424,7 +424,7 @@ function transport(){
       console.log("Dr.Who");
       whoosh.play();
 
-      switch(i){
+      switch(random(0,4)){
 
         case 0 : x = 345; 
                  y = 450;
