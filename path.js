@@ -69,8 +69,8 @@ function setup() {
   dx = 0;
   dy = 0;
 
-  if(!beginGame)
-  titlescreen();
+  // if(!beginGame)
+  // titlescreen();
 
   // pixelDensity(1);
   // maze.loadPixels();
@@ -93,12 +93,12 @@ function setup() {
   walkoflife.setLoop(true);
 
   //Animation of square using p5 Play Library
-  spr = createSprite(
-    x, y, 10, 10);
-  spr.shapeColor = color(255,0,0);
-  spr.rotateToDirection = true;
-  spr.maxSpeed = 3;
-  spr.friction = 0.1;
+  // spr = createSprite(
+  //   x, y, 10, 10);
+  // spr.shapeColor = color(255,0,0);
+  // spr.rotateToDirection = true;
+  // spr.maxSpeed = 3;
+  // spr.friction = 0.1;
 
 }
 
@@ -107,12 +107,14 @@ function draw() {
   
 
   if(beginGame){
-  console.log()
-  var elem = document.querySelector('button');
-  button.remove();
-  console.log('btn removed');
 
-  //music.stop();  
+  // console.log()
+  // var elem = document.querySelector('button');
+  // button.remove();
+  // console.log('btn removed');
+
+  //music.stop(); 
+  } 
 
   background(maze);
 
@@ -173,10 +175,11 @@ function draw() {
     }
   }
 
-  if (mouseIsPressed) {
-    spr.attractionPoint(1, mouseX, mouseY);
-  }
-  drawSprites();
+  //p5 Play Sprite
+  // if (mouseIsPressed) {
+  //   spr.attractionPoint(1, mouseX, mouseY);
+  // }
+  // drawSprites();
 
   //Movement of Red Ball/Player
 
@@ -261,7 +264,6 @@ function draw() {
   // updatePixels();
   //drawGrid ();
 
-  }
 
   
 }
@@ -281,7 +283,7 @@ function titlescreen() {
 
   stroke(0,255,0);
   button = createButton('PLAY');
-  button.position(320, 320);
+  button.position(300, 380);
   button.style.color = "white";
   button.mousePressed(function (){
     beginGame = true;
