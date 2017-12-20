@@ -37,6 +37,7 @@ var whoosh;
 var hitmsgcount = 0;
 var beginGame = false;
 var ypos = 0;
+var sigh;
 //var delay;
 var button;
 
@@ -66,6 +67,8 @@ function preload() {
   hitwall = loadSound("hitwall.mp3"); //sound effect when you hit wall
 
   whoosh = loadSound("whoosh.wav"); //sound effect when you teleport
+
+  sigh = loadSound("sigh.wav"); //sound effect when you bump into sadness
 
 }
 
@@ -449,7 +452,7 @@ function grief(){
     if (dist(x,y,sadfaceObjects[i].x,sadfaceObjects[i].currentY)< 8) {
 
       console.log("Misery");
-      joy.play();
+      sigh.play();
       x = 320;
       y = 630;
     }
