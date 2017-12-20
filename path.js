@@ -36,9 +36,14 @@ var walkoflife;
 var whoosh;
 var hitmsgcount = 0;
 var beginGame = false;
+var ypos = 0;
 //var delay;
 var button;
+
 var score = 0;
+
+var sadfaces = [[230,313],[17,618],[525,108],[628,388]]; //array for the roaming sad faces
+
 var gateways = [[210,313],[7,618],[515,108],[618,388]]; //array for the spots player can pass through//
 
 var smileys = [[65,65],[242,625],[626,90],[92,370],[193,142],[550,245],[575,600],[448,422],[295,295],[448,168],[218,498],[15,550],[345,91]];
@@ -146,7 +151,10 @@ function draw() {
     x = 320;
     y = 630;
     hitwall.play();
+    scoreElement = document.getElementById("Score");
     score--; //Reduces Score by 1
+    scoreElement.innerHTML = "Score : " + score;
+    
 
   }
   else {hitmsgcount=0}
@@ -161,7 +169,7 @@ function draw() {
   stroke(55, 150, 255);
   strokeWeight (1 +(frameCount % 2));
   fill(255, 0, 0);
-  ellipse(0, 0, 12, 12);
+  ellipse(0, 0, 10, 10);
   pop();
 
   //For Displaying Win Message when the player reaches the end of the Maze
@@ -186,34 +194,39 @@ function draw() {
   //Move Up using W or up arrow
 
   if (keyIsDown(UP_ARROW) || keyIsDown(87)) {
-    y--;
+    y = y - 2;
   }
 
   //Move Up using S or down arrow
 
   if (keyIsDown(DOWN_ARROW) || keyIsDown(83)) {
-    y++;
+    y = y + 2;
   }
 
   //Move Up using D or right arrow
 
   if (keyIsDown(RIGHT_ARROW) || keyIsDown(68)) {
-    x++;
+    x = x + 2;
   }
 
   //Move Up using A or left arrow
 
   if (keyIsDown(LEFT_ARROW) || keyIsDown(65)) {
-    x--;
+    x = x - 2;
   }
 
   happy1 = new Hapiness(193,142);
   happy1.drawHapiness();
 
+  sad1 = new Sadness(295,600);
+  sad1.drawSadness();
+
   portal1 = new Portal(210,313);
   portal1.drawPortal();
 
   drawSmileys();
+
+  drawSadfaces();
 
   drawGateways();
 
@@ -221,15 +234,17 @@ function draw() {
 
   transport();
 
+  grief();
+
   //Displaying Score
   
-  stroke(121,0,255);
-  fill(55, 150, 255);
-  strokeWeight(3);
-  textSize(17);
-  text("S c o r e :",235,149)
-  textSize(21);
-  text(score,312,149);
+  // stroke(121,0,255);
+  // fill(55, 150, 255);
+  // strokeWeight(3);
+  // textSize(17);
+  // text("S c o r e :",235,149)
+  // textSize(21);
+  // text(score,312,149);
 
   //Brightness Effect for spotlight around player
 
@@ -375,9 +390,52 @@ function collect(){
       console.log("Joy");
       smileys.splice(i,1);
       joy.play();
+      scoreElement = document.getElementById("Score");
       score = score+5;
+      scoreElement.innerHTML = "Score : " + score;
     }
   }  
+}
+
+//Sad Faces
+class Sadness {
+
+  constructor(x,y){
+
+    this.x = x;
+    this.y = y;
+
+  }
+
+  drawSadness(){
+
+  noStroke();
+
+  // sad face
+  fill(75, 144, 209);
+  ellipse(this.x, this.y + sin(ypos)*27, 18, 18);
+
+  // Moving the sad faces up & down
+  ypos += 0.01;
+
+  //smiley eyes & mouth
+  fill(0);
+  ellipse(this.x-4, (this.y+ sin(ypos)*28)-2, 3, 3);
+  ellipse(this.x+4, (this.y+ sin(ypos)*28)-2, 3, 3);
+  arc(this.x, (this.y+ sin(ypos)*28)+5, 9, 8, radians(180), radians(0));
+
+  }
+}
+
+//To draw the Sad Faces
+function drawSadfaces(){
+
+  for (var i= 0; i<sadfaces.length; i++){
+
+    new Sadness(sadfaces[i][0],sadfaces[i][1]).drawSadness();
+
+  }
+
 }
 
 class Portal {
