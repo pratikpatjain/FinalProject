@@ -42,7 +42,9 @@ var button;
 
 var score = 0;
 
-var sadfaces = [[230,313],[17,618],[525,108],[628,388]]; //array for the roaming sad faces
+var sadfaces = [[230,313],[17,618],[525,108],[628,388],[295,600]]; //array for the roaming sad faces
+
+var sadfaceObjects = [];
 
 var gateways = [[210,313],[7,618],[515,108],[618,388]]; //array for the spots player can pass through//
 
@@ -218,8 +220,8 @@ function draw() {
   happy1 = new Hapiness(193,142);
   happy1.drawHapiness();
 
-  sad1 = new Sadness(295,600);
-  sad1.drawSadness();
+  // sad1 = new Sadness(295,600);
+  // sad1.drawSadness();
 
   portal1 = new Portal(210,313);
   portal1.drawPortal();
@@ -404,6 +406,7 @@ class Sadness {
 
     this.x = x;
     this.y = y;
+    this.currentY = y;
 
   }
 
@@ -418,12 +421,12 @@ class Sadness {
   // Moving the sad faces up & down
   ypos += 0.01;
 
-  //smiley eyes & mouth
+  //sad eyes & mouth
   fill(0);
   ellipse(this.x-4, (this.y+ sin(ypos)*28)-2, 3, 3);
   ellipse(this.x+4, (this.y+ sin(ypos)*28)-2, 3, 3);
   arc(this.x, (this.y+ sin(ypos)*28)+5, 9, 8, radians(180), radians(0));
-
+  this.currentY = this.y+ sin(ypos)*28;
   }
 }
 
@@ -432,10 +435,25 @@ function drawSadfaces(){
 
   for (var i= 0; i<sadfaces.length; i++){
 
-    new Sadness(sadfaces[i][0],sadfaces[i][1]).drawSadness();
+    sadfaceObjects.push(new Sadness(sadfaces[i][0],sadfaces[i][1]));
+    sadfaceObjects[i].drawSadness();
 
   }
 
+}
+
+function grief(){
+
+  for (var i= 0; i<sadfaceObjects.length; i++){
+
+    if (dist(x,y,sadfaceObjects[i].x,sadfaceObjects[i].currentY)< 8) {
+
+      console.log("Misery");
+      joy.play();
+      x = 320;
+      y = 630;
+    }
+  }  
 }
 
 class Portal {
