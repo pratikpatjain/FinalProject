@@ -42,7 +42,7 @@ var button;
 
 var score = 0;
 
-var sadfaces = [[230,313],[17,618],[525,108],[628,388],[295,600]]; //array for the roaming sad faces
+var sadfaces = [[295,395],[92,473],[193,195],[550,345],[320,550]]; //array for the roaming sad faces
 
 var sadfaceObjects = [];
 
